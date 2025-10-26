@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michon Goddijn - Portfolio</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Lucide icons as simple SVG components
+        const Mail = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+        );
+
+        const MapPin = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+        );
+
+        const Phone = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+        );
+
+        const ChevronDown = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+        );
+
+        const Menu = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="4" x2="20" y1="12" y2="12"/>
+                <line x1="4" x2="20" y1="6" y2="6"/>
+                <line x1="4" x2="20" y1="18" y2="18"/>
+            </svg>
+        );
+
+        const X = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6 6 18"/>
+                <path d="m6 6 12 12"/>
+            </svg>
+        );
+
+        const Moon = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+        );
+
+        const Sun = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2"/>
+                <path d="M12 20v2"/>
+                <path d="m4.93 4.93 1.41 1.41"/>
+                <path d="m17.66 17.66 1.41 1.41"/>
+                <path d="M2 12h2"/>
+                <path d="M20 12h2"/>
+                <path d="m6.34 17.66-1.41 1.41"/>
+                <path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
+        );
+
+        function Portfolio() {
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [expandedProject, setExpandedProject] = useState(null);
+            const [darkMode, setDarkMode] = useState(true);
+
+            const projects = [
+                {
+                    id: 1,
+                    title: "MLOps & Cloud Deployment",
+                    year: "Year 2, Block D",
+                    tags: ["Azure ML", "Docker", "Python", "Agile/Scrum"],
+                    description: "Productionized CV/NLP projects: packaged training/inference code, containerized an API with Docker, and deployed to Azure ML; documented architecture and pipelines.",
+                    highlights: [
+                        "Worked in sprints with product/sprint backlogs, demos, and retrospectives",
+                        "Shipped a working demo with full CI/CD pipeline",
+                        "Documented architecture and deployment workflows"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Computer Vision & Robotics",
+                    year: "Year 2, Block B",
+                    tags: ["Computer Vision", "Object Detection", "Robotics", "Python"],
+                    description: "Built proof-of-concept models for detection, segmentation, localization, and measurement on plant images for phenotyping workflow.",
+                    highlights: [
+                        "Integrated CV models with robotic simulation",
+                        "Demonstrated automated inoculation workflow",
+                        "Applied object detection and segmentation techniques"
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Analytics Translator (SMEs & AI)",
+                    year: "Year 2, Block A",
+                    tags: ["Mixed Methods", "Research", "Business Analysis"],
+                    description: "Bridged business and technical teams for Digiwerkplaats SMEs; translated business questions into analysis plans.",
+                    highlights: [
+                        "Designed and ran mixed-method study (survey + interviews)",
+                        "Researched chatbots, privacy, misinformation, and AI knowledge",
+                        "Delivered research paper, policy paper, and conference poster"
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Deep Learning Image Classifier",
+                    year: "Year 1, Block C",
+                    tags: ["TensorFlow/Keras", "XAI", "CNN", "UX Testing"],
+                    description: "Trained a CNN to classify sea animals; improved interpretability with Grad-CAM/LIME and prototyped a user-centered interface.",
+                    highlights: [
+                        "Implemented explainable AI techniques (Grad-CAM/LIME)",
+                        "Ran think-aloud and A/B tests to refine UX",
+                        "Built human-centered AI interface"
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "SDG Dashboard",
+                    year: "Year 1, Block A",
+                    tags: ["Python", "Power BI", "CRISP-DM", "Data Visualization"],
+                    description: "Built an interactive dashboard to explore global/country SDG indicators; performed data collection, cleaning, and EDA.",
+                    highlights: [
+                        "Applied CRISP-DM methodology",
+                        "Communicated findings to non-technical stakeholders",
+                        "Created clear visuals and live demo"
+                    ]
+                }
+            ];
+
+            const skills = {
+                "Languages": ["Python", "SQL", "DAX"],
+                "ML/AI": ["scikit-learn", "TensorFlow/Keras", "pandas", "NumPy"],
+                "Tools": ["Git/GitHub", "Power BI", "Azure ML", "Docker"],
+                "Methods": ["Regression", "Classification", "CNNs", "XAI", "Time Series"]
+            };
+
+            const scrollToSection = (id) => {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                setMobileMenuOpen(false);
+            };
+
+            return (
+                <div className={`min-h-screen transition-colors duration-300 ${darkMode 
+                    ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900' 
+                    : 'bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100'
+                }`}>
+                    {/* Navigation */}
+                    <nav className={`fixed top-0 w-full backdrop-blur-md z-50 border-b transition-colors duration-300 ${darkMode 
+                        ? 'bg-slate-900/80 border-slate-700' 
+                        : 'bg-white/80 border-slate-200'
+                    }`}>
+                        <div className="max-w-6xl mx-auto px-6 py-4">
+                            <div className="flex justify-between items-center">
+                                <a href="#hero" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    MG
+                                </a>
+                                
+                                <div className="hidden md:flex gap-8 items-center">
+                                    <button onClick={() => scrollToSection('about')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>About</button>
+                                    <button onClick={() => scrollToSection('projects')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Projects</button>
+                                    <button onClick={() => scrollToSection('skills')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Skills</button>
+                                    <button onClick={() => scrollToSection('contact')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Contact</button>
+                                    
+                                    <button
+                                        onClick={() => setDarkMode(!darkMode)}
+                                        className={`p-2 rounded-lg transition ${darkMode 
+                                            ? 'bg-slate-800 text-yellow-400 hover:bg-slate-700' 
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                        }`}
+                                        aria-label="Toggle dark mode"
+                                    >
+                                        {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                                    </button>
+                                </div>
+
+                                <button 
+                                    className={darkMode ? 'md:hidden text-slate-300' : 'md:hidden text-slate-600'}
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                >
+                                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                                </button>
+                            </div>
+
+                            {mobileMenuOpen && (
+                                <div className="md:hidden mt-4 pb-4 flex flex-col gap-4">
+                                    <button onClick={() => scrollToSection('about')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>About</button>
+                                    <button onClick={() => scrollToSection('projects')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Projects</button>
+                                    <button onClick={() => scrollToSection('skills')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Skills</button>
+                                    <button onClick={() => scrollToSection('contact')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Contact</button>
+                                    <button
+                                        onClick={() => setDarkMode(!darkMode)}
+                                        className={`flex items-center gap-2 transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}
+                                    >
+                                        {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                                        <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <section id="hero" className="pt-32 pb-20 px-6">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="text-center">
+                                <div className={`inline-block mb-4 px-4 py-2 rounded-full text-sm font-medium ${darkMode 
+                                    ? 'bg-blue-900/50 text-blue-300' 
+                                    : 'bg-blue-100 text-blue-700'
+                                }`}>
+                                    Available for Internship
+                                </div>
+                                <h1 className={`text-5xl md:text-7xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    Michon Goddijn
+                                </h1>
+                                <p className={`text-xl md:text-2xl mb-8 max-w-3xl mx-auto ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                    Data Science & AI Student specializing in machine learning, data visualization, and applied AI projects
+                                </p>
+                                <div className="flex flex-wrap justify-center gap-4 mb-12">
+                                    <a href="mailto:michon.goddijn@icloud.com" className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                        <Mail size={20} />
+                                        Get in Touch
+                                    </a>
+                                    <button onClick={() => scrollToSection('projects')} className={`px-6 py-3 border-2 rounded-lg transition ${darkMode 
+                                        ? 'border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400' 
+                                        : 'border-slate-300 text-slate-700 hover:border-blue-600 hover:text-blue-600'
+                                    }`}>
+                                        View Projects
+                                    </button>
+                                </div>
+                                <div className={`flex justify-center gap-6 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                    <div className="flex items-center gap-2">
+                                        <MapPin size={18} />
+                                        <span>Breda, NL</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Phone size={18} />
+                                        <span>+31 6 21919273</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-16 flex justify-center">
+                                <button onClick={() => scrollToSection('about')} className="animate-bounce">
+                                    <ChevronDown size={32} className={darkMode ? 'text-slate-600' : 'text-slate-400'} />
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>About Me</h2>
+                            <div className="grid md:grid-cols-2 gap-12 items-center">
+                                <div>
+                                    <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl aspect-square flex items-center justify-center text-white text-8xl font-bold">
+                                        MG
+                                    </div>
+                                </div>
+                                <div className="space-y-6">
+                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                        I'm a third-year Data Science & AI student at Breda University of Applied Sciences with a passion for turning complex data into actionable insights.
+                                    </p>
+                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                        My expertise spans machine learning, computer vision, and MLOps. I've built interpretable ML models, deployed cloud-based solutions, and bridged the gap between technical and business teams.
+                                    </p>
+                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                        I'm seeking an internship where I can apply AI to real-world business challenges and continue growing as a data scientist.
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-4 pt-6">
+                                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
+                                            <div className="text-3xl font-bold text-blue-600">5+</div>
+                                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Major Projects</div>
+                                        </div>
+                                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-purple-900/30' : 'bg-purple-50'}`}>
+                                            <div className="text-3xl font-bold text-purple-600">2027</div>
+                                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Expected Graduation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Projects Section */}
+                    <section id="projects" className="py-20 px-6">
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className={`text-4xl font-bold mb-4 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Projects</h2>
+                            <p className={`text-center mb-12 max-w-2xl mx-auto ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                A selection of academic and applied projects demonstrating my skills in ML, computer vision, and data analytics
+                            </p>
+                            
+                            <div className="grid gap-6">
+                                {projects.map((project) => (
+                                    <div key={project.id} className={`rounded-xl shadow-sm hover:shadow-md transition border overflow-hidden ${darkMode 
+                                        ? 'bg-slate-800 border-slate-700' 
+                                        : 'bg-white border-slate-200'
+                                    }`}>
+                                        <div className="p-6">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <div>
+                                                    <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{project.title}</h3>
+                                                    <p className={`text-sm ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>{project.year}</p>
+                                                </div>
+                                                <button
+                                                    onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
+                                                    className={`transition ${darkMode 
+                                                        ? 'text-blue-400 hover:text-blue-300' 
+                                                        : 'text-blue-600 hover:text-blue-700'
+                                                    }`}
+                                                >
+                                                    {expandedProject === project.id ? 'Show Less' : 'Show More'}
+                                                </button>
+                                            </div>
+                                            
+                                            <div className="flex flex-wrap gap-2 mb-4">
+                                                {project.tags.map((tag) => (
+                                                    <span key={tag} className={`px-3 py-1 rounded-full text-sm ${darkMode 
+                                                        ? 'bg-slate-700 text-slate-300' 
+                                                        : 'bg-slate-100 text-slate-700'
+                                                    }`}>
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            
+                                            <p className={darkMode ? 'text-slate-300 mb-4' : 'text-slate-700 mb-4'}>
+                                                {project.description}
+                                            </p>
+                                            
+                                            {expandedProject === project.id && (
+                                                <div className={`border-t pt-4 mt-4 ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}>
+                                                    <h4 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Key Highlights:</h4>
+                                                    <ul className="space-y-2">
+                                                        {project.highlights.map((highlight, idx) => (
+                                                            <li key={idx} className={`flex items-start gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                                                <span className={darkMode ? 'text-blue-400 mt-1' : 'text-blue-600 mt-1'}>•</span>
+                                                                <span>{highlight}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Skills Section */}
+                    <section id="skills" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Technical Skills</h2>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {Object.entries(skills).map(([category, items]) => (
+                                    <div key={category} className={`p-6 rounded-xl border ${darkMode 
+                                        ? 'bg-slate-700/30 border-slate-700' 
+                                        : 'bg-gradient-to-br from-slate-50 to-blue-50 border-slate-200'
+                                    }`}>
+                                        <h3 className={`font-bold text-lg mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{category}</h3>
+                                        <div className="space-y-2">
+                                            {items.map((skill) => (
+                                                <div key={skill} className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
+                                                    {skill}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="mt-12 p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white">
+                                <h3 className="text-2xl font-bold mb-4">Education</h3>
+                                <div className="space-y-2">
+                                    <p className="text-lg">BSc Data Science & Artificial Intelligence</p>
+                                    <p className="text-blue-100">Breda University of Applied Sciences</p>
+                                    <p className="text-blue-100">2022–2027 (Expected graduation)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Experience Section */}
+                    <section className="py-20 px-6">
+                        <div className="max-w-6xl mx-auto">
+                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Experience</h2>
+                            <div className={`rounded-xl shadow-sm p-8 border ${darkMode 
+                                ? 'bg-slate-800 border-slate-700' 
+                                : 'bg-white border-slate-200'
+                            }`}>
+                                <div className="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>Delivery Driver</h3>
+                                        <p className={`font-medium ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>Thuisbezorgd.nl</p>
+                                    </div>
+                                    <span className={darkMode ? 'text-slate-500' : 'text-slate-500'}>2022–present</span>
+                                </div>
+                                <p className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
+                                    Ensured timely and accurate deliveries in a fast-paced environment; maintained high reliability and strong time management skills.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Contact Section */}
+                    <section id="contact" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className={`text-4xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Let's Connect</h2>
+                            <p className={`text-xl mb-12 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                I'm actively seeking internship opportunities in Data Science and AI. Let's discuss how I can contribute to your team!
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row justify-center gap-6 mb-12">
+                                <a 
+                                    href="mailto:michon.goddijn@icloud.com" 
+                                    className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-lg font-medium"
+                                >
+                                    <Mail size={24} />
+                                    michon.goddijn@icloud.com
+                                </a>
+                                <a 
+                                    href="tel:+31621919273" 
+                                    className={`flex items-center justify-center gap-2 px-8 py-4 border-2 rounded-lg transition text-lg font-medium ${darkMode 
+                                        ? 'border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400' 
+                                        : 'border-slate-300 text-slate-700 hover:border-blue-600 hover:text-blue-600'
+                                    }`}
+                                >
+                                    <Phone size={24} />
+                                    +31 6 21919273
+                                </a>
+                            </div>
+
+                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>
+                                <p className="mb-2">Languages: Dutch (native), English (fluent)</p>
+                                <p>Based in Breda, Netherlands</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className={`py-8 px-6 border-t ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+                        <div className={`max-w-6xl mx-auto text-center ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>
+                            <p>© 2025 Michon Goddijn. All rights reserved.</p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Portfolio />, document.getElementById('root'));
+    </script>
+</body>
+</html>
