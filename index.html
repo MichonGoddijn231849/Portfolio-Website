@@ -13,455 +13,396 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
-        // Lucide icons as simple SVG components
-        const Mail = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-            </svg>
-        );
-
-        const MapPin = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-            </svg>
-        );
-
-        const Phone = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-        );
-
-        const ChevronDown = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m6 9 6 6 6-6"/>
-            </svg>
-        );
-
-        const Menu = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="4" x2="20" y1="12" y2="12"/>
-                <line x1="4" x2="20" y1="6" y2="6"/>
-                <line x1="4" x2="20" y1="18" y2="18"/>
-            </svg>
-        );
-
-        const X = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6 6 18"/>
-                <path d="m6 6 12 12"/>
-            </svg>
-        );
-
-        const Moon = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-            </svg>
-        );
-
-        const Sun = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="4"/>
-                <path d="M12 2v2"/>
-                <path d="M12 20v2"/>
-                <path d="m4.93 4.93 1.41 1.41"/>
-                <path d="m17.66 17.66 1.41 1.41"/>
-                <path d="M2 12h2"/>
-                <path d="M20 12h2"/>
-                <path d="m6.34 17.66-1.41 1.41"/>
-                <path d="m19.07 4.93-1.41 1.41"/>
-            </svg>
-        );
+        // Icons
+        const Mail = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+        const MapPin = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>;
+        const Phone = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>;
+        const ChevronDown = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>;
+        const Menu = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>;
+        const X = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+        const Moon = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>;
+        const Sun = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
+        const Github = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>;
+        const ExternalLink = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>;
+        const Award = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>;
+        const Code = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>;
+        const Brain = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>;
+        const Database = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>;
+        const Zap = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+        const Target = ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
 
         function Portfolio() {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             const [expandedProject, setExpandedProject] = useState(null);
             const [darkMode, setDarkMode] = useState(true);
+            const [scrollY, setScrollY] = useState(0);
+
+            useEffect(() => {
+                const handleScroll = () => setScrollY(window.scrollY);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
 
             const projects = [
-                {
-                    id: 1,
-                    title: "MLOps & Cloud Deployment",
-                    year: "Year 2, Block D",
-                    tags: ["Azure ML", "Docker", "Python", "Agile/Scrum"],
-                    description: "Productionized CV/NLP projects: packaged training/inference code, containerized an API with Docker, and deployed to Azure ML; documented architecture and pipelines.",
-                    highlights: [
-                        "Worked in sprints with product/sprint backlogs, demos, and retrospectives",
-                        "Shipped a working demo with full CI/CD pipeline",
-                        "Documented architecture and deployment workflows"
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "Computer Vision & Robotics",
-                    year: "Year 2, Block B",
-                    tags: ["Computer Vision", "Object Detection", "Robotics", "Python"],
-                    description: "Built proof-of-concept models for detection, segmentation, localization, and measurement on plant images for phenotyping workflow.",
-                    highlights: [
-                        "Integrated CV models with robotic simulation",
-                        "Demonstrated automated inoculation workflow",
-                        "Applied object detection and segmentation techniques"
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "Analytics Translator (SMEs & AI)",
-                    year: "Year 2, Block A",
-                    tags: ["Mixed Methods", "Research", "Business Analysis"],
-                    description: "Bridged business and technical teams for Digiwerkplaats SMEs; translated business questions into analysis plans.",
-                    highlights: [
-                        "Designed and ran mixed-method study (survey + interviews)",
-                        "Researched chatbots, privacy, misinformation, and AI knowledge",
-                        "Delivered research paper, policy paper, and conference poster"
-                    ]
-                },
-                {
-                    id: 4,
-                    title: "Deep Learning Image Classifier",
-                    year: "Year 1, Block C",
-                    tags: ["TensorFlow/Keras", "XAI", "CNN", "UX Testing"],
-                    description: "Trained a CNN to classify sea animals; improved interpretability with Grad-CAM/LIME and prototyped a user-centered interface.",
-                    highlights: [
-                        "Implemented explainable AI techniques (Grad-CAM/LIME)",
-                        "Ran think-aloud and A/B tests to refine UX",
-                        "Built human-centered AI interface"
-                    ]
-                },
-                {
-                    id: 5,
-                    title: "SDG Dashboard",
-                    year: "Year 1, Block A",
-                    tags: ["Python", "Power BI", "CRISP-DM", "Data Visualization"],
-                    description: "Built an interactive dashboard to explore global/country SDG indicators; performed data collection, cleaning, and EDA.",
-                    highlights: [
-                        "Applied CRISP-DM methodology",
-                        "Communicated findings to non-technical stakeholders",
-                        "Created clear visuals and live demo"
-                    ]
-                }
+                { id: 1, title: "Emotion Detection MLOps Pipeline", year: "Year 2, Block D", accentColor: "blue", tags: ["Azure ML", "Docker", "FastAPI", "CI/CD", "React", "Airflow"], description: "Production-grade emotion detection system for video/audio analysis, deployed on Azure with full MLOps lifecycle automation.", fullDescription: "Built an end-to-end MLOps pipeline for automated emotion detection in TV show content for Content Intelligence Agency. Developed a production-ready Python package with CLI, REST API, and React/TypeScript web interface. Implemented comprehensive Azure ML pipelines for data versioning, automated training, and multi-strategy deployment (local, on-premise, cloud). Created CI/CD workflows with GitHub Actions, containerized all components with Docker, and established monitoring dashboards with automated retraining triggers. Managed project using Scrum methodology across 5 two-week sprints with Azure DevOps.", technologies: ["Azure ML", "FastAPI", "Docker", "React/TypeScript", "MLflow", "Airflow", "GitHub Actions"], achievements: ["Deployed scalable API supporting 6 emotions across 3 languages (EN/FR/NL)", "Implemented automated pipelines: data ingestion, training, deployment, monitoring", "Built production package with CLI, REST API, and modern web interface", "Achieved Level 2-3 MLOps maturity with CI/CD, versioning, and auto-retraining"], github: "https://github.com/MichonGoddijn231849/Portfolio/tree/main/Year%202%20Block%20D" },
+                { id: 2, title: "Plant Phenotyping: CV & Robotic Automation", year: "Year 2, Block B", accentColor: "emerald", tags: ["U-Net", "Reinforcement Learning", "PyBullet", "OpenCV", "Kaggle"], description: "AI system combining deep learning segmentation and RL-based robotic control for automated plant root analysis and inoculation.", fullDescription: "Developed an integrated computer vision and robotics pipeline for the Netherlands Plant Eco-phenotyping Centre (NPEC) to automate high-throughput plant phenotyping. Built U-Net model for root segmentation achieving F1 score of 0.856, competed on Kaggle achieving 5.12% sMAPE on public leaderboard. Trained reinforcement learning agent using PPO algorithm and implemented PID controller for robotic inoculation with ±1mm precision. Integrated CV pipeline with PyBullet-simulated Opentrons OT-2 robot for end-to-end automation. RL controller achieved 13% faster performance than PID while maintaining accuracy.", technologies: ["TensorFlow/Keras", "U-Net", "Stable Baselines 3", "PyBullet", "OpenCV", "Weights & Biases"], achievements: ["Achieved F1 score of 0.856 on root segmentation, Kaggle rank with 5.12% sMAPE", "Trained RL agent achieving ±1mm robotic precision, 13% faster than PID controller", "Improved Kaggle score 83% (30% to 5.12%) with zone-based root assignment", "Integrated CV pipeline with robotic simulation for automated inoculation"], github: "https://github.com/MichonGoddijn231849/Portfolio/tree/main/Year%202%20Block%20B" },
+                { id: 3, title: "Balancing Automation and Human Support in SMEs", year: "Year 2, Block A", accentColor: "violet", tags: ["Qualitative Research", "Thematic Analysis", "Mixed Methods", "Python", "LaTeX"], description: "Research study on chatbot accuracy and customer trust for Digiwerkplaats, combining in-depth interviews with statistical survey analysis.", fullDescription: "Led qualitative research investigating how chatbot accuracy impacts customer trust compared to traditional human assistance in SMEs. Conducted 5 in-depth semi-structured interviews across retail, technology, and service sectors, applying systematic thematic analysis (Braun & Clarke framework) to identify 5 core themes: accuracy as foundation of trust, human backup necessity, frustration with generic responses, expectation management, and speed-personalization trade-offs. Contributed to team mixed-methods study with 150-participant Qualtrics survey. Translated findings into actionable business strategies through 4000-word research paper and collaborative policy brief for SME stakeholders. Managed project using Scrum methodology.", technologies: ["Python", "Thematic Analysis", "Qualtrics", "LaTeX/Overleaf", "Scrum", "GDPR Compliance"], achievements: ["Identified 5 key themes through systematic coding of 5 interviews with theme saturation", "Co-authored policy paper with team analyzing 150+ survey responses using advanced statistics", "Delivered 4000-word APA-formatted research paper with comprehensive literature review", "Presented findings at academic conference with stakeholder-focused poster"], github: "https://github.com/MichonGoddijn231849/Portfolio/tree/main/Year%202%20Block%20A" },
+                { id: 4, title: "SeaSpotter: AI-Powered Marine Mammal Classifier", year: "Year 1, Block C", accentColor: "indigo", tags: ["CNN", "Transfer Learning", "TensorFlow", "LIME", "Grad-CAM", "Figma"], description: "Deep learning image classifier with explainable AI that distinguishes seals, sea lions, and walruses for wildlife conservation.", fullDescription: "Developed an end-to-end image classification application combining deep learning, explainable AI, and human-centered design. Built custom CNN architectures and leveraged transfer learning with MobileNetV2, achieving 85% accuracy. Implemented LIME and Grad-CAM for model interpretability, allowing users to understand prediction reasoning. Conducted systematic fairness analysis, think-aloud studies, and A/B testing to create a production-ready Figma prototype. The application supports wildlife conservationists and marine biologists in rapid, accurate species identification.", technologies: ["TensorFlow/Keras", "MobileNetV2", "LIME", "Grad-CAM", "NumPy", "Figma"], achievements: ["Achieved 85% accuracy, surpassing 62% human baseline performance", "Implemented explainable AI with LIME and Grad-CAM for transparent predictions", "Built MLP from scratch (no frameworks) demonstrating deep neural network fundamentals", "Conducted comprehensive UX research: think-aloud studies and A/B testing with 10+ users"], github: "https://github.com/MichonGoddijn231849/Portfolio/tree/main/Year%201%20Block%20C" },
+                { id: 5, title: "Sustainable Development Goals Dashboard", year: "Year 1, Block A", accentColor: "amber", tags: ["Python", "Power BI", "CRISP-DM", "Statistical Analysis", "openpyxl"], description: "Interactive dashboard for monitoring global SDG progress with focus on e-waste management and environmental sustainability.", fullDescription: "Developed a comprehensive data analytics solution for the SDG Hub@BUas to track and visualize progress toward the UN Sustainable Development Goals. Applied the CRISP-DM methodology to formulate research questions, collect SDG data from international sources, and conduct statistical analysis. Created an interactive Power BI dashboard to communicate findings to policymakers and stakeholders, with particular focus on e-waste recycling disparities across countries.", technologies: ["Python", "openpyxl", "Jupyter Notebook", "Power BI", "DAX", "Excel"], achievements: ["Analyzed e-waste recycling data across 195+ countries with statistical methods", "Identified significant disparities: 0-23.76 kg per capita recycling rates", "Presented findings to SDG Hub@BUas with live dashboard demonstration", "Applied CRISP-DM methodology for structured data science approach"], github: "https://github.com/MichonGoddijn231849/Portfolio/tree/main/Year%201%20Block%20A" }
             ];
 
-            const skills = {
-                "Languages": ["Python", "SQL", "DAX"],
-                "ML/AI": ["scikit-learn", "TensorFlow/Keras", "pandas", "NumPy"],
-                "Tools": ["Git/GitHub", "Power BI", "Azure ML", "Docker"],
-                "Methods": ["Regression", "Classification", "CNNs", "XAI", "Time Series"]
-            };
+            const skills = [
+                { category: "Machine Learning", icon: <Brain size={24} />, items: ["Deep Learning (CNNs)", "Transfer Learning", "Reinforcement Learning", "XAI", "Model Optimization"] },
+                { category: "MLOps & Cloud", icon: <Zap size={24} />, items: ["Azure ML", "Docker", "CI/CD", "Model Monitoring", "Pipeline Automation"] },
+                { category: "Data & Analytics", icon: <Database size={24} />, items: ["Statistical Analysis", "Data Visualization", "Power BI", "Mixed Methods", "Research Design"] },
+                { category: "Development", icon: <Code size={24} />, items: ["Python", "FastAPI", "React/TypeScript", "Git/GitHub", "REST APIs"] }
+            ];
 
             const scrollToSection = (id) => {
                 document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
                 setMobileMenuOpen(false);
             };
 
+            const getAccentColor = (color) => {
+                const colors = {
+                    blue: { text: 'text-blue-400', border: 'border-blue-500/30', hover: 'hover:border-blue-500/60' },
+                    emerald: { text: 'text-emerald-400', border: 'border-emerald-500/30', hover: 'hover:border-emerald-500/60' },
+                    violet: { text: 'text-violet-400', border: 'border-violet-500/30', hover: 'hover:border-violet-500/60' },
+                    indigo: { text: 'text-indigo-400', border: 'border-indigo-500/30', hover: 'hover:border-indigo-500/60' },
+                    amber: { text: 'text-amber-400', border: 'border-amber-500/30', hover: 'hover:border-amber-500/60' }
+                };
+                return colors[color] || colors.blue;
+            };
+
             return (
-                <div className={`min-h-screen transition-colors duration-300 ${darkMode 
-                    ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900' 
-                    : 'bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100'
-                }`}>
-                    {/* Navigation */}
-                    <nav className={`fixed top-0 w-full backdrop-blur-md z-50 border-b transition-colors duration-300 ${darkMode 
-                        ? 'bg-slate-900/80 border-slate-700' 
-                        : 'bg-white/80 border-slate-200'
-                    }`}>
-                        <div className="max-w-6xl mx-auto px-6 py-4">
+                <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-slate-950' : 'bg-white'}`}>
+                    {/* Premium background */}
+                    <div className="fixed inset-0 pointer-events-none">
+                        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] ${darkMode ? 'bg-gradient-radial from-blue-500/5 via-transparent to-transparent' : 'bg-gradient-radial from-blue-100 via-transparent to-transparent'}`} style={{ transform: `translateX(-50%) translateY(${-scrollY * 0.3}px)` }} />
+                        <div className={`absolute inset-0 ${darkMode ? 'opacity-[0.015]' : 'opacity-[0.02]'}`} style={{ backgroundImage: `linear-gradient(${darkMode ? '#ffffff' : '#000000'} 1px, transparent 1px), linear-gradient(90deg, ${darkMode ? '#ffffff' : '#000000'} 1px, transparent 1px)`, backgroundSize: '100px 100px' }} />
+                        <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-b from-transparent via-transparent to-slate-950/50' : 'bg-gradient-to-b from-transparent via-transparent to-slate-50/50'}`} />
+                    </div>
+
+                    {/* Nav */}
+                    <nav className={`fixed top-0 w-full backdrop-blur-xl z-50 transition-all duration-300 ${darkMode ? 'bg-slate-950/80' : 'bg-white/80'} ${scrollY > 50 ? 'border-b ' + (darkMode ? 'border-slate-800/50 shadow-lg shadow-black/5' : 'border-slate-200/50 shadow-lg') : 'border-b border-transparent'}`}>
+                        <div className="max-w-7xl mx-auto px-8 py-5">
                             <div className="flex justify-between items-center">
-                                <a href="#hero" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                                    MG
-                                </a>
+                                <a href="#hero" className={`text-xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>Michon Goddijn</a>
                                 
-                                <div className="hidden md:flex gap-8 items-center">
-                                    <button onClick={() => scrollToSection('about')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>About</button>
-                                    <button onClick={() => scrollToSection('projects')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Projects</button>
-                                    <button onClick={() => scrollToSection('skills')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Skills</button>
-                                    <button onClick={() => scrollToSection('contact')} className={`transition ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Contact</button>
-                                    
-                                    <button
-                                        onClick={() => setDarkMode(!darkMode)}
-                                        className={`p-2 rounded-lg transition ${darkMode 
-                                            ? 'bg-slate-800 text-yellow-400 hover:bg-slate-700' 
-                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
-                                        aria-label="Toggle dark mode"
-                                    >
-                                        {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                                <div className="hidden md:flex gap-10 items-center">
+                                    {['About', 'Projects', 'Skills', 'Contact'].map((item) => (
+                                        <button key={item} onClick={() => scrollToSection(item.toLowerCase())} className={`text-sm font-medium tracking-wide transition-all duration-300 relative group ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}>
+                                            {item}
+                                            <span className={`absolute -bottom-1 left-0 w-0 h-px ${darkMode ? 'bg-white' : 'bg-slate-900'} transition-all duration-300 group-hover:w-full`} />
+                                        </button>
+                                    ))}
+                                    <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-lg transition-all duration-300 ${darkMode ? 'bg-slate-900 text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-600 hover:text-slate-900'}`}>
+                                        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                                     </button>
                                 </div>
 
-                                <button 
-                                    className={darkMode ? 'md:hidden text-slate-300' : 'md:hidden text-slate-600'}
-                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                >
+                                <button className={darkMode ? 'md:hidden text-slate-400' : 'md:hidden text-slate-600'} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                                     {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                                 </button>
                             </div>
 
                             {mobileMenuOpen && (
-                                <div className="md:hidden mt-4 pb-4 flex flex-col gap-4">
-                                    <button onClick={() => scrollToSection('about')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>About</button>
-                                    <button onClick={() => scrollToSection('projects')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Projects</button>
-                                    <button onClick={() => scrollToSection('skills')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Skills</button>
-                                    <button onClick={() => scrollToSection('contact')} className={`transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}>Contact</button>
-                                    <button
-                                        onClick={() => setDarkMode(!darkMode)}
-                                        className={`flex items-center gap-2 transition text-left ${darkMode ? 'text-slate-300 hover:text-blue-400' : 'text-slate-600 hover:text-blue-600'}`}
-                                    >
-                                        {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-                                        <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
-                                    </button>
+                                <div className="md:hidden mt-6 pt-6 border-t border-slate-800 flex flex-col gap-4">
+                                    {['About', 'Projects', 'Skills', 'Contact'].map((item) => (
+                                        <button key={item} onClick={() => scrollToSection(item.toLowerCase())} className={`transition text-left text-sm font-medium ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}>{item}</button>
+                                    ))}
                                 </div>
                             )}
                         </div>
                     </nav>
 
-                    {/* Hero Section */}
-                    <section id="hero" className="pt-32 pb-20 px-6">
-                        <div className="max-w-6xl mx-auto">
-                            <div className="text-center">
-                                <div className={`inline-block mb-4 px-4 py-2 rounded-full text-sm font-medium ${darkMode 
-                                    ? 'bg-blue-900/50 text-blue-300' 
-                                    : 'bg-blue-100 text-blue-700'
-                                }`}>
+                    {/* Hero */}
+                    <section id="hero" className="pt-40 pb-32 px-6 relative min-h-screen flex items-center">
+                        <div className="max-w-6xl mx-auto w-full">
+                            <div className="max-w-4xl">
+                                <div className={`inline-flex items-center gap-2 mb-10 px-5 py-2 rounded-full text-xs font-medium tracking-wider uppercase backdrop-blur-sm border ${darkMode ? 'bg-slate-900/50 text-slate-400 border-slate-800' : 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                                     Available for Internship
                                 </div>
-                                <h1 className={`text-5xl md:text-7xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                                    Michon Goddijn
+                                
+                                <h1 className={`text-7xl md:text-8xl font-black mb-8 tracking-tight leading-[0.9] ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    Michon<br />Goddijn
                                 </h1>
-                                <p className={`text-xl md:text-2xl mb-8 max-w-3xl mx-auto ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                                    Data Science & AI Student specializing in machine learning, data visualization, and applied AI projects
+                                
+                                <p className={`text-2xl md:text-3xl mb-8 font-light max-w-2xl ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                    Turning complex data into intelligent, production-ready AI solutions
                                 </p>
-                                <div className="flex flex-wrap justify-center gap-4 mb-12">
-                                    <a href="mailto:michon.goddijn@icloud.com" className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                                        <Mail size={20} />
-                                        Get in Touch
+                                
+                                <p className={`text-base mb-12 max-w-xl leading-relaxed ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>
+                                    Third-year Data Science & AI student at Breda University • Specializing in machine learning, computer vision, and MLOps
+                                </p>
+                                
+                                <div className="flex flex-wrap gap-4 mb-16">
+                                    <a href="mailto:michon.goddijn@icloud.com" className={`px-8 py-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${darkMode ? 'bg-white text-slate-950 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-slate-800'} shadow-xl`}>
+                                        <span className="flex items-center gap-2"><Mail size={18} />Get in Touch</span>
                                     </a>
-                                    <button onClick={() => scrollToSection('projects')} className={`px-6 py-3 border-2 rounded-lg transition ${darkMode 
-                                        ? 'border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400' 
-                                        : 'border-slate-300 text-slate-700 hover:border-blue-600 hover:text-blue-600'
-                                    }`}>
+                                    <button onClick={() => scrollToSection('projects')} className={`px-8 py-4 border rounded-xl font-medium transition-all duration-300 ${darkMode ? 'border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white' : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'}`}>
                                         View Projects
                                     </button>
                                 </div>
-                                <div className={`flex justify-center gap-6 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                                    <div className="flex items-center gap-2">
-                                        <MapPin size={18} />
-                                        <span>Breda, NL</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Phone size={18} />
-                                        <span>+31 6 21919273</span>
-                                    </div>
+                                
+                                <div className={`flex flex-wrap gap-8 text-sm ${darkMode ? 'text-slate-600' : 'text-slate-500'}`}>
+                                    <div className="flex items-center gap-2"><MapPin size={16} /><span>Breda, NL</span></div>
+                                    <div className="flex items-center gap-2"><Phone size={16} /><span>+31 6 21919273</span></div>
+                                    <div className="flex items-center gap-2"><Award size={16} /><span>GPA 8.4</span></div>
                                 </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* About */}
+                    <section id="about" className={`py-32 px-6 relative ${darkMode ? 'bg-slate-900/30' : 'bg-slate-50/50'}`}>
+                        <div className="max-w-6xl mx-auto">
+                            <div className="mb-20">
+                                <p className={`text-xs font-semibold tracking-widest uppercase mb-4 ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>About Me</p>
+                                <h2 className={`text-5xl md:text-6xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>Building the Future<br />with AI</h2>
                             </div>
                             
-                            <div className="mt-16 flex justify-center">
-                                <button onClick={() => scrollToSection('about')} className="animate-bounce">
-                                    <ChevronDown size={32} className={darkMode ? 'text-slate-600' : 'text-slate-400'} />
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* About Section */}
-                    <section id="about" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
-                        <div className="max-w-6xl mx-auto">
-                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>About Me</h2>
-                            <div className="grid md:grid-cols-2 gap-12 items-center">
-                                <div>
-                                    <img 
-                                        src="https://i.imgur.com/bhH8mdR.jpeg" 
-                                        alt="Michon Goddijn"
-                                        className="rounded-2xl aspect-square object-cover w-full shadow-lg"
-                                    />
+                            <div className="grid md:grid-cols-5 gap-16 items-start">
+                                <div className="md:col-span-2 flex justify-center">
+                                    <div className="relative">
+                                        <div className="w-72 h-72 rounded-full overflow-hidden border border-slate-800/50 shadow-2xl relative">
+                                            <div style={{ width: '100%', height: '100%', transform: 'scale(1.8)', transformOrigin: 'center 35%' }}>
+                                                <img src="https://i.imgur.com/bhH8mdR.jpeg" alt="Michon Goddijn" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="space-y-6">
-                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                                        I'm a third-year Data Science & AI student at Breda University of Applied Sciences with a passion for turning complex data into actionable insights.
+                                
+                                <div className="md:col-span-3 space-y-8">
+                                    <p className={`text-xl leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                                        I'm a third-year Data Science & AI student at Breda University, passionate about creating intelligent systems that drive real-world impact.
                                     </p>
-                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                                        My expertise spans machine learning, computer vision, and MLOps. I've built interpretable ML models, deployed cloud-based solutions, and bridged the gap between technical and business teams.
+                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                        My expertise spans deep learning, computer vision, and MLOps. I build models that are interpretable, scalable, and production-ready – bridging the gap between technical complexity and business value.
                                     </p>
-                                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                                        I'm seeking an internship where I can apply AI to real-world business challenges and continue growing as a data scientist.
-                                    </p>
-                                    <div className="grid grid-cols-2 gap-4 pt-6">
-                                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
-                                            <div className="text-3xl font-bold text-blue-600">5+</div>
-                                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Major Projects</div>
-                                        </div>
-                                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-purple-900/30' : 'bg-purple-50'}`}>
-                                            <div className="text-3xl font-bold text-purple-600">2027</div>
-                                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Expected Graduation</div>
-                                        </div>
+                                    
+                                    <div className="grid grid-cols-3 gap-4 pt-6">
+                                        {[
+                                            { value: '5+', label: 'Projects' },
+                                            { value: '8.4', label: 'GPA' },
+                                            { value: '100%', label: 'Committed' }
+                                        ].map((stat, idx) => (
+                                            <div key={idx} className={`p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 ${darkMode ? 'bg-slate-900/50 border-slate-800/50' : 'bg-white/50 border-slate-200'}`}>
+                                                <div className={`text-3xl font-black mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{stat.value}</div>
+                                                <div className={`text-xs font-medium ${darkMode ? 'text-slate-600' : 'text-slate-500'}`}>{stat.label}</div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    {/* Projects Section */}
-                    <section id="projects" className="py-20 px-6">
+                    {/* Projects */}
+                    <section id="projects" className="py-32 px-6 relative">
                         <div className="max-w-6xl mx-auto">
-                            <h2 className={`text-4xl font-bold mb-4 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Projects</h2>
-                            <p className={`text-center mb-12 max-w-2xl mx-auto ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                                A selection of academic and applied projects demonstrating my skills in ML, computer vision, and data analytics
-                            </p>
+                            <div className="mb-20">
+                                <p className={`text-xs font-semibold tracking-widest uppercase mb-4 ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>Selected Work</p>
+                                <h2 className={`text-5xl md:text-6xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>Featured Projects</h2>
+                            </div>
                             
-                            <div className="grid gap-6">
-                                {projects.map((project) => (
-                                    <div key={project.id} className={`rounded-xl shadow-sm hover:shadow-md transition border overflow-hidden ${darkMode 
-                                        ? 'bg-slate-800 border-slate-700' 
-                                        : 'bg-white border-slate-200'
-                                    }`}>
-                                        <div className="p-6">
-                                            <div className="flex justify-between items-start mb-4">
-                                                <div>
-                                                    <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{project.title}</h3>
-                                                    <p className={`text-sm ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>{project.year}</p>
+                            <div className="space-y-6">
+                                {projects.map((project, index) => {
+                                    const accent = getAccentColor(project.accentColor);
+                                    return (
+                                        <div key={project.id} className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 hover:scale-[1.01] ${darkMode ? `bg-slate-900/30 ${accent.border} ${accent.hover} backdrop-blur-sm hover:shadow-2xl` : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-xl'}`}>
+                                            <div className="p-10">
+                                                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 mb-6">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-baseline gap-4 mb-3">
+                                                            <span className={`text-xs font-mono font-bold ${accent.text}`}>{String(index + 1).padStart(2, '0')}</span>
+                                                            <h3 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{project.title}</h3>
+                                                        </div>
+                                                        <p className={`text-sm font-medium ${darkMode ? 'text-slate-600' : 'text-slate-500'}`}>{project.year}</p>
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center gap-3">
+                                                        <a href={project.github} target="_blank" rel="noopener noreferrer" className={`p-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'}`}>
+                                                            <Github size={20} />
+                                                        </a>
+                                                        <button onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)} className={`px-5 py-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${darkMode ? 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>
+                                                            {expandedProject === project.id ? 'Less' : 'More'}
+                                                            <ExternalLink size={14} />
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <button
-                                                    onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
-                                                    className={`transition ${darkMode 
-                                                        ? 'text-blue-400 hover:text-blue-300' 
-                                                        : 'text-blue-600 hover:text-blue-700'
-                                                    }`}
-                                                >
-                                                    {expandedProject === project.id ? 'Show Less' : 'Show More'}
-                                                </button>
-                                            </div>
-                                            
-                                            <div className="flex flex-wrap gap-2 mb-4">
-                                                {project.tags.map((tag) => (
-                                                    <span key={tag} className={`px-3 py-1 rounded-full text-sm ${darkMode 
-                                                        ? 'bg-slate-700 text-slate-300' 
-                                                        : 'bg-slate-100 text-slate-700'
-                                                    }`}>
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                            
-                                            <p className={darkMode ? 'text-slate-300 mb-4' : 'text-slate-700 mb-4'}>
-                                                {project.description}
-                                            </p>
-                                            
-                                            {expandedProject === project.id && (
-                                                <div className={`border-t pt-4 mt-4 ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}>
-                                                    <h4 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Key Highlights:</h4>
-                                                    <ul className="space-y-2">
-                                                        {project.highlights.map((highlight, idx) => (
-                                                            <li key={idx} className={`flex items-start gap-2 ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                                                                <span className={darkMode ? 'text-blue-400 mt-1' : 'text-blue-600 mt-1'}>•</span>
-                                                                <span>{highlight}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
+                                                
+                                                <div className="flex flex-wrap gap-2 mb-6">
+                                                    {project.tags.map((tag) => (
+                                                        <span key={tag} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${darkMode ? 'bg-slate-800/50 text-slate-400' : 'bg-slate-100 text-slate-600'}`}>{tag}</span>
+                                                    ))}
                                                 </div>
-                                            )}
+                                                
+                                                <p className={`text-base leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{project.description}</p>
+                                                
+                                                {expandedProject === project.id && (
+                                                    <div className={`border-t pt-8 mt-8 space-y-8 ${darkMode ? 'border-slate-800/50' : 'border-slate-200'}`}>
+                                                        <div>
+                                                            <h4 className={`text-sm font-semibold mb-4 tracking-wide uppercase ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>Overview</h4>
+                                                            <p className={`leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{project.fullDescription}</p>
+                                                        </div>
+                                                        <div>
+                                                            <h4 className={`text-sm font-semibold mb-4 tracking-wide uppercase ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>Technologies</h4>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {project.technologies.map((tech) => (
+                                                                    <span key={tech} className={`px-3 py-1.5 rounded-lg text-xs font-medium border ${darkMode ? 'bg-slate-800/30 text-slate-400 border-slate-700/50' : 'bg-slate-50 text-slate-700 border-slate-200'}`}>{tech}</span>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <h4 className={`text-sm font-semibold mb-4 tracking-wide uppercase ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>Key Achievements</h4>
+                                                            <div className="grid md:grid-cols-2 gap-3">
+                                                                {project.achievements.map((achievement, idx) => (
+                                                                    <div key={idx} className={`flex items-start gap-3 p-4 rounded-lg ${darkMode ? 'bg-slate-800/20' : 'bg-slate-50'}`}>
+                                                                        <span className={`text-sm mt-0.5 ${accent.text}`}>✓</span>
+                                                                        <span className={`text-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>{achievement}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     </section>
 
-                    {/* Skills Section */}
-                    <section id="skills" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
+                    {/* Skills */}
+                    <section id="skills" className={`py-32 px-6 relative ${darkMode ? 'bg-slate-900/30' : 'bg-slate-50/50'}`}>
                         <div className="max-w-6xl mx-auto">
-                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Technical Skills</h2>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {Object.entries(skills).map(([category, items]) => (
-                                    <div key={category} className={`p-6 rounded-xl border ${darkMode 
-                                        ? 'bg-slate-700/30 border-slate-700' 
-                                        : 'bg-gradient-to-br from-slate-50 to-blue-50 border-slate-200'
-                                    }`}>
-                                        <h3 className={`font-bold text-lg mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{category}</h3>
-                                        <div className="space-y-2">
-                                            {items.map((skill) => (
-                                                <div key={skill} className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
-                                                    {skill}
-                                                </div>
+                            <div className="mb-20">
+                                <p className={`text-xs font-semibold tracking-widest uppercase mb-4 ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>Expertise</p>
+                                <h2 className={`text-5xl md:text-6xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>Technical Skills</h2>
+                            </div>
+                            
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+                                {skills.map((skillGroup) => (
+                                    <div key={skillGroup.category} className={`p-8 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 ${darkMode ? 'bg-slate-900/30 border-slate-800/50 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg'}`}>
+                                        <div className={`mb-6 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{skillGroup.icon}</div>
+                                        <h3 className={`font-bold text-lg mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{skillGroup.category}</h3>
+                                        <div className="space-y-3">
+                                            {skillGroup.items.map((skill) => (
+                                                <div key={skill} className={`text-sm ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>{skill}</div>
                                             ))}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             
-                            <div className="mt-12 p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white">
-                                <h3 className="text-2xl font-bold mb-4">Education</h3>
-                                <div className="space-y-2">
-                                    <p className="text-lg">BSc Data Science & Artificial Intelligence</p>
-                                    <p className="text-blue-100">Breda University of Applied Sciences</p>
-                                    <p className="text-blue-100">2022–2027 (Expected graduation)</p>
+                            <div className={`relative overflow-hidden rounded-2xl p-12 border ${darkMode ? 'bg-slate-900/50 border-slate-800/50' : 'bg-slate-900 border-slate-800'} text-white`}>
+                                <div>
+                                    <div className="flex items-center gap-3 mb-10">
+                                        <Target size={24} />
+                                        <h3 className="text-2xl font-bold">Education</h3>
+                                    </div>
+                                    
+                                    <div className="grid md:grid-cols-2 gap-12">
+                                        <div className="space-y-3">
+                                            <p className="text-xl font-bold">BSc Data Science & AI</p>
+                                            <p className="text-slate-300 text-sm">Breda University of Applied Sciences</p>
+                                            <p className="text-slate-400 text-sm">2023 – 2027</p>
+                                            <div className="pt-4 space-y-2 text-sm">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-400">Propedeuse</span>
+                                                    <span className="font-bold">7.7 / 10</span>
+                                                </div>
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-slate-400">Second Year</span>
+                                                    <span className="font-bold">8.4 / 10</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-3">
+                                            <p className="text-xl font-bold">HAVO</p>
+                                            <p className="text-slate-300 text-sm">Mencia de Mendoza Lyceum</p>
+                                            <p className="text-slate-400 text-sm">2017 – 2023</p>
+                                            <p className="text-slate-400 text-sm mt-4">Economics & Business + Informatica</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    {/* Experience Section */}
-                    <section className="py-20 px-6">
+                    {/* Experience */}
+                    <section className="py-32 px-6">
                         <div className="max-w-6xl mx-auto">
-                            <h2 className={`text-4xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>Experience</h2>
-                            <div className={`rounded-xl shadow-sm p-8 border ${darkMode 
-                                ? 'bg-slate-800 border-slate-700' 
-                                : 'bg-white border-slate-200'
-                            }`}>
-                                <div className="flex justify-between items-start mb-4">
+                            <div className="mb-20">
+                                <p className={`text-xs font-semibold tracking-widest uppercase mb-4 ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>Experience</p>
+                                <h2 className={`text-5xl md:text-6xl font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>Work Experience</h2>
+                            </div>
+                            
+                            <div className={`rounded-2xl p-10 border backdrop-blur-sm transition-all duration-300 hover:scale-[1.01] ${darkMode ? 'bg-slate-900/30 border-slate-800/50 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-xl'}`}>
+                                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 mb-6">
                                     <div>
-                                        <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>Delivery Driver</h3>
-                                        <p className={`font-medium ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>Thuisbezorgd.nl</p>
+                                        <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Delivery Driver</h3>
+                                        <p className={`font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>Thuisbezorgd.nl</p>
                                     </div>
-                                    <span className={darkMode ? 'text-slate-500' : 'text-slate-500'}>2022–present</span>
+                                    <span className={`text-sm font-medium ${darkMode ? 'text-slate-600' : 'text-slate-500'}`}>2021 – present</span>
                                 </div>
-                                <p className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
-                                    Ensured timely and accurate deliveries in a fast-paced environment; maintained high reliability and strong time management skills.
+                                <p className={`leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                    Managed time-sensitive deliveries in a fast-paced environment, consistently maintaining high customer satisfaction ratings. Developed strong organizational skills, reliability under pressure, and professional communication.
                                 </p>
                             </div>
                         </div>
                     </section>
 
-                    {/* Contact Section */}
-                    <section id="contact" className={`py-20 px-6 ${darkMode ? 'bg-slate-800/50' : 'bg-white'}`}>
-                        <div className="max-w-4xl mx-auto text-center">
-                            <h2 className={`text-4xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Let's Connect</h2>
-                            <p className={`text-xl mb-12 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                                I'm actively seeking internship opportunities in Data Science and AI. Let's discuss how I can contribute to your team!
-                            </p>
+                    {/* Contact */}
+                    <section id="contact" className={`py-32 px-6 relative ${darkMode ? 'bg-slate-900/30' : 'bg-slate-50/50'}`}>
+                        <div className="max-w-6xl mx-auto text-center">
+                            <div className="mb-20">
+                                <p className={`text-xs font-semibold tracking-widest uppercase mb-4 ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>Get in Touch</p>
+                                <h2 className={`text-5xl md:text-6xl font-bold tracking-tight mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Let's Connect</h2>
+                                <p className={`text-lg max-w-2xl mx-auto ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                    I'm actively seeking internship opportunities in Data Science and AI
+                                </p>
+                            </div>
                             
-                            <div className="flex flex-col sm:flex-row justify-center gap-6 mb-12">
-                                <a 
-                                    href="mailto:michon.goddijn@icloud.com" 
-                                    className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-lg font-medium"
-                                >
-                                    <Mail size={24} />
-                                    michon.goddijn@icloud.com
+                            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-20">
+                                <a href="mailto:michon.goddijn@icloud.com" className={`px-10 py-5 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${darkMode ? 'bg-white text-slate-950 hover:bg-slate-100' : 'bg-slate-900 text-white hover:bg-slate-800'} shadow-xl`}>
+                                    <span className="flex items-center justify-center gap-3"><Mail size={20} />michon.goddijn@icloud.com</span>
                                 </a>
-                                <a 
-                                    href="tel:+31621919273" 
-                                    className={`flex items-center justify-center gap-2 px-8 py-4 border-2 rounded-lg transition text-lg font-medium ${darkMode 
-                                        ? 'border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400' 
-                                        : 'border-slate-300 text-slate-700 hover:border-blue-600 hover:text-blue-600'
-                                    }`}
-                                >
-                                    <Phone size={24} />
-                                    +31 6 21919273
+                                <a href="tel:+31621919273" className={`px-10 py-5 border rounded-xl font-medium transition-all duration-300 hover:scale-105 ${darkMode ? 'border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white bg-slate-900/30' : 'border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900 bg-white'}`}>
+                                    <span className="flex items-center justify-center gap-3"><Phone size={20} />+31 6 21919273</span>
                                 </a>
                             </div>
 
-                            <div className={darkMode ? 'text-slate-400' : 'text-slate-600'}>
-                                <p className="mb-2">Languages: Dutch (native), English (fluent)</p>
-                                <p>Based in Breda, Netherlands</p>
+                            <div className={`inline-block p-8 rounded-xl border backdrop-blur-sm ${darkMode ? 'bg-slate-900/30 border-slate-800/50' : 'bg-white border-slate-200'}`}>
+                                <div className={`space-y-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                    <div className="flex items-center justify-center gap-2">
+                                        <MapPin size={16} />
+                                        <span><strong>Based in:</strong> Breda, Netherlands</span>
+                                    </div>
+                                    <div className="flex items-center justify-center gap-2">
+                                        <Award size={16} />
+                                        <span><strong>Languages:</strong> Dutch (Native) • English (Fluent)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
 
                     {/* Footer */}
-                    <footer className={`py-8 px-6 border-t ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
-                        <div className={`max-w-6xl mx-auto text-center ${darkMode ? 'text-slate-500' : 'text-slate-600'}`}>
-                            <p>© 2025 Michon Goddijn. All rights reserved.</p>
+                    <footer className={`py-10 px-6 border-t ${darkMode ? 'border-slate-900 bg-slate-950/50' : 'border-slate-100 bg-white/50'} backdrop-blur-sm`}>
+                        <div className={`max-w-6xl mx-auto text-center space-y-3 ${darkMode ? 'text-slate-600' : 'text-slate-500'}`}>
+                            <p className="text-sm font-medium">© 2025 Michon Goddijn</p>
+                            <div className="flex justify-center gap-3">
+                                {['Machine Learning', 'Computer Vision', 'MLOps', 'Research'].map((tag) => (
+                                    <span key={tag} className="text-xs">{tag}</span>
+                                ))}
+                            </div>
                         </div>
                     </footer>
                 </div>
